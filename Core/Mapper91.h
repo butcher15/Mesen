@@ -25,10 +25,18 @@ protected:
 
 	void UpdateState() override
 	{
-		SelectPRGPage(0, ((_outerBank << 3) & 0x30) | (_prgBanks[0] & 0x0F));
-		SelectPRGPage(1, ((_outerBank << 3) & 0x30) | (_prgBanks[1] & 0x0F));
-		SelectPRGPage(2, ((_outerBank << 3) & 0x30) | 0xE);
-		SelectPRGPage(3, ((_outerBank << 3) & 0x30) | 0xF);
++		if(GetPRGPageCount() > 16) {
++			//ROMs larger than 128KB (hacks): flat 8KB bank registers, last 2 pages fixed at $C000-$FFFF
++			SelectPRGPage(0, _prgBanks[0]);
++			SelectPRGPage(1, _prgBanks[1]);
++			SelectPRGPage(2, -2);
++			SelectPRGPage(3, -1);
++		} else {
++			SelectPRGPage(0, ((_outerBank << 3) & 0x30) | (_prgBanks[0] & 0x0F));
++			SelectPRGPage(1, ((_outerBank << 3) & 0x30) | (_prgBanks[1] & 0x0F));
++			SelectPRGPage(2, ((_outerBank << 3) & 0x30) | 0xE);
++			SelectPRGPage(3, ((_outerBank << 3) & 0x30) | 0xF);
++		}
 
 		SelectCHRPage(0, ((_outerBank << 8) & 0x100) | _chrBanks[0]);
 		SelectCHRPage(1, ((_outerBank << 8) & 0x100) | _chrBanks[1]);
