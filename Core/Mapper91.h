@@ -26,7 +26,6 @@ protected:
 	void UpdateState() override
 	{
 +		if(GetPRGPageCount() > 16) {
-+			//ROMs larger than 128KB (hacks): flat 8KB bank registers, last 2 pages fixed at $C000-$FFFF
 +			SelectPRGPage(0, _prgBanks[0]);
 +			SelectPRGPage(1, _prgBanks[1]);
 +			SelectPRGPage(2, -2);
